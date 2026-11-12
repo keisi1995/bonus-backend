@@ -11,8 +11,16 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        // Se lee de la variable de entorno ConnectionStrings__BonusTest (no se versiona en appsettings.json).
+        var connectionString = configuration.GetConnectionString("BonusTest");
+        if (string.IsNullOrWhiteSpace(connectionString))
+        {
+            throw new InvalidOperationException(
+                "Falta la cadena de conexión 'BonusTest'. Defina la variable de entorno ConnectionStrings__BonusTest.");
+        }
+
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("BonusTest")));
+            options.UseSqlServer(connectionString));
 
         services.AddScoped<ICatalogRepository, CatalogRepository>();
 
