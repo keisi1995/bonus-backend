@@ -23,10 +23,10 @@ Con Docker, por ejemplo:
 
 ```bash
 docker cp database/02_create_bonus.sql sqlserver2019:/tmp/
-docker exec sqlserver2019 /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "<password>" -C -i /tmp/02_create_bonus.sql
+docker exec sqlserver2019 /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "<password>" -C -I -i /tmp/02_create_bonus.sql
 ```
 
-Los scripts 02 y 03 se pueden ejecutar más de una vez.
+Los scripts 02 y 03 se pueden ejecutar más de una vez. Usa `-I` (`QUOTED_IDENTIFIER ON`) en las consultas manuales con `sqlcmd`: SQL Server lo exige para modificar tablas con índices filtrados. La API ya trabaja con esa opción activa.
 
 ### 2. API
 La cadena de conexión no está versionada: se lee de la variable de entorno `ConnectionStrings__BonusTest`.
