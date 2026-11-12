@@ -11,8 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<EmployeeProjectHours> EmployeeProjectHours => Set<EmployeeProjectHours>();
     public DbSet<BonusType> BonusTypes => Set<BonusType>();
     public DbSet<BonusReason> BonusReasons => Set<BonusReason>();
-
-    // agrega aquí el DbSet de Bonus y su configuración.
+    public DbSet<Bonus> Bonuses => Set<Bonus>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
