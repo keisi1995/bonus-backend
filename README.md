@@ -88,10 +88,13 @@ Las operaciones de escritura requieren el header `UserCode`. Toda violación de 
 - Los errores 409 los muestra solo el interceptor existente; los componentes solo manejan el caso de éxito.
 
 ## Pruebas
-`tests/BonusTest.Domain.Tests` (xUnit, 21 pruebas): el ejemplo del enunciado (500 / 40 / 460), el redondeo de medio hacia arriba en bruto y retención, la retención 0 %, la distribución (un proyecto, proporcional y con ajuste del último) y las transiciones de estado.
+`dotnet test` ejecuta los dos proyectos; ninguno necesita base de datos.
+
+- `tests/BonusTest.Domain.Tests` (xUnit, 21 pruebas): el ejemplo del enunciado (500 / 40 / 460), el redondeo de medio hacia arriba en bruto y retención, la retención 0 %, la distribución (un proyecto, proporcional y con ajuste del último) y las transiciones de estado.
+- `tests/BonusTest.Application.Tests` (xUnit, 46 pruebas): las reglas de `BonusService` con un repositorio en memoria (`FakeBonusRepository`) y un reloj fijo (`FixedTimeProvider`): `UserCode` obligatorio, empleado inexistente o cesado, formato de periodo y periodo futuro, límites de monto y porcentaje, máximo 2 decimales, tipo de bono inválido, motivo inactivo y bono duplicado. También verifica que, ante cualquier error, no se agregue ni se guarde nada.
 
 ## Pendiente / mejoras posibles
-- Pruebas de `BonusService` con un repositorio falso y pruebas de integración de la API.
+- Pruebas de integración de la API (`WebApplicationFactory` con un SQL Server de prueba), para cubrir rutas, headers, el mapeo de EF y el índice único filtrado.
 - Control de concurrencia optimista (`rowversion`) para el caso de anular y pagar el mismo bono a la vez. Hoy se valida el estado al leer, pero las dos operaciones podrían cruzarse.
 - Ver el detalle de la distribución de un bono pagado desde la grilla (hoy se devuelve en la respuesta de `/pay`).
 - Confirmaciones con un diálogo propio en lugar de `window.confirm`.
